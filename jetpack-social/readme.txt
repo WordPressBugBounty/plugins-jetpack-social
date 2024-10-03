@@ -4,7 +4,7 @@ Tags: social media automation, social media scheduling, auto share, social shari
 Requires at least: 6.5
 Requires PHP: 7.0
 Tested up to: 6.6
-Stable tag: 5.3.1
+Stable tag: 5.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,7 +102,7 @@ The easiest way is to use the Custom Message option in the publishing options bo
 6. Managing Social media accounts in the post editor
 
 == Changelog ==
-### 5.3.1 - 2024-09-06
+### 5.4.1 - 2024-10-02
 #### Changed
 - Internal updates.
 
