@@ -5,16 +5,16 @@
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"php": ">=7.0",
-		"automattic/jetpack-connection": "^5.1.1",
-		"automattic/jetpack-autoloader": "^3.1.0",
+		"automattic/jetpack-connection": "^5.1.5",
+		"automattic/jetpack-autoloader": "^3.1.2",
 		"automattic/jetpack-config": "^2.0.4",
-		"automattic/jetpack-assets": "^2.3.8",
+		"automattic/jetpack-assets": "^2.3.10",
 		"automattic/jetpack-redirect": "^2.0.4",
-		"automattic/jetpack-plans": "^0.4.11"
+		"automattic/jetpack-plans": "^0.4.12"
 	},
 	"require-dev": {
 		"yoast/phpunit-polyfills": "^1.1.1",
-		"automattic/jetpack-changelogger": "^4.2.6",
+		"automattic/jetpack-changelogger": "^4.2.7",
 		"automattic/wordbless": "0.4.2"
 	},
 	"suggest": {
@@ -59,7 +59,7 @@
 			"link-template": "https://github.com/Automattic/jetpack-publicize/compare/v${old}...v${new}"
 		},
 		"branch-alias": {
-			"dev-trunk": "0.54.x-dev"
+			"dev-trunk": "0.55.x-dev"
 		}
 	},
 	"config": {
