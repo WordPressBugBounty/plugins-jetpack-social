@@ -7,9 +7,7 @@
 
 namespace Automattic\Jetpack\Publicize\Jetpack_Social_Settings;
 
-use Automattic\Jetpack\Connection\Manager;
 use Automattic\Jetpack\Modules;
-use Automattic\Jetpack\Publicize\Publicize_Script_Data;
 use Automattic\Jetpack\Publicize\Social_Image_Generator\Templates;
 
 /**
@@ -70,6 +68,26 @@ class Settings {
 			'variable_name' => 'useShareStatus',
 		),
 	);
+
+	/**
+	 * Whether the actions have been hooked into.
+	 *
+	 * @var bool
+	 */
+	protected static $actions_hooked_in = false;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+
+		if ( ! self::$actions_hooked_in ) {
+			add_action( 'rest_api_init', array( $this, 'register_settings' ) );
+			add_action( 'admin_init', array( $this, 'register_settings' ) );
+
+			self::$actions_hooked_in = true;
+		}
+	}
 
 	/**
 	 * Migrate old options to the new settings. Previously SIG settings were stored in the
@@ -153,7 +171,9 @@ class Settings {
 			self::OPTION_PREFIX . self::UTM_SETTINGS,
 			array(
 				'type'         => 'boolean',
-				'default'      => false,
+				'default'      => array(
+					'enabled' => false,
+				),
 				'show_in_rest' => array(
 					'schema' => array(
 						'type'       => 'object',
@@ -250,12 +270,21 @@ class Settings {
 	}
 
 	/**
+	 * Check if the pricing page should be displayed.
+	 *
+	 * @return bool
+	 */
+	public static function should_show_pricing_page() {
+		return (bool) get_option( self::JETPACK_SOCIAL_SHOW_PRICING_PAGE, true );
+	}
+
+	/**
 	 * Get if the social notes feature is enabled.
 	 *
 	 * @return bool
 	 */
 	public function is_social_notes_enabled() {
-		return get_option( self::JETPACK_SOCIAL_NOTE_CPT_ENABLED, false );
+		return (bool) get_option( self::JETPACK_SOCIAL_NOTE_CPT_ENABLED, false );
 	}
 
 	/**
@@ -286,43 +315,12 @@ class Settings {
 
 	/**
 	 * Get the initial state.
+	 * Deprecated method, stub left here to avoid fatal.
+	 *
+	 * @deprecated 0.62.0
 	 */
 	public function get_initial_state() {
-		global $publicize;
-
-		$settings = $this->get_settings( true );
-
-		$settings['useAdminUiV1'] = false;
-		$settings['featureFlags'] = array();
-
-		$settings['is_publicize_enabled'] = false;
-		$settings['hasPaidFeatures']      = false;
-
-		$connection = new Manager();
-
-		if ( ( new Modules() )->is_active( 'publicize' ) && $connection->has_connected_user() ) {
-			$settings['useAdminUiV1']   = $publicize->use_admin_ui_v1();
-			$settings['connectionData'] = array(
-				'connections' => $publicize->get_all_connections_for_user(),
-				'adminUrl'    => esc_url_raw( $publicize->publicize_connections_url( 'jetpack-social-connections-admin-page' ) ),
-				'services'    => Publicize_Script_Data::get_supported_services(),
-			);
-
-			$settings['is_publicize_enabled'] = true;
-			$settings['hasPaidFeatures']      = $publicize->has_paid_features();
-
-			foreach ( self::FEATURE_FLAGS as $feature_flag ) {
-				$settings['featureFlags'][ $feature_flag['variable_name'] ] = $publicize->has_feature_flag( $feature_flag['flag_name'], $feature_flag['feature_name'] );
-			}
-		} else {
-			$settings['connectionData'] = array(
-				'connections' => array(),
-			);
-		}
-
-		$settings['connectionRefreshPath'] = ! empty( $settings['useAdminUiV1'] ) ? 'jetpack/v4/publicize/connections?test_connections=1' : '/jetpack/v4/publicize/connection-test-results';
-
-		return $settings;
+		return array();
 	}
 
 	/**

@@ -7,7 +7,6 @@
 
 namespace Automattic\Jetpack\Publicize\REST_API;
 
-use Automattic\Jetpack\Publicize\Connections;
 use WP_Error;
 use WP_Post;
 use WP_REST_Request;
@@ -33,6 +32,15 @@ class Connections_Post_Field {
 	 * @var array
 	 */
 	public $memoized_updates = array();
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
+		// Adding on a higher priority to make sure we're the first field registered.
+		// The priority parameter can be removed once we deprecate WPCOM_REST_API_V2_Post_Publicize_Connections_Field.
+		add_action( 'rest_api_init', array( $this, 'register_fields' ), 5 );
+	}
 
 	/**
 	 * Registers the jetpack_publicize_connections field. Called
@@ -180,16 +188,6 @@ class Connections_Post_Field {
 		$properties  = array_keys( $schema['properties'] );
 		$connections = $publicize->get_filtered_connection_data( $post_id );
 
-		$connections_id_map = array_reduce(
-			Connections::get_all(),
-			function ( $map, $connection ) {
-				$map[ $connection['connection_id'] ] = $connection;
-
-				return $map;
-			},
-			array()
-		);
-
 		$output_connections = array();
 		foreach ( $connections as $connection ) {
 			$output_connection = array();
@@ -198,10 +196,6 @@ class Connections_Post_Field {
 					$output_connection[ $property ] = $connection[ $property ];
 				}
 			}
-
-			$output_connection['id']             = (string) $connection['unique_id'];
-			$output_connection['can_disconnect'] = current_user_can( 'edit_others_posts' ) || get_current_user_id() === (int) $connection['user_id'];
-			$output_connection['wpcom_user_id']  = $connections_id_map[ $connection['connection_id'] ]['wpcom_user_id'] ?? 0;
 
 			$output_connections[] = $output_connection;
 		}
@@ -299,7 +293,7 @@ class Connections_Post_Field {
 		$available_connections_by_connection_id = array();
 		$available_connections_by_service_name  = array();
 		foreach ( $available_connections as $available_connection ) {
-			$available_connections_by_connection_id[ $available_connection['id'] ] = $available_connection;
+			$available_connections_by_connection_id[ $available_connection['connection_id'] ] = $available_connection;
 
 			if ( ! isset( $available_connections_by_service_name[ $available_connection['service_name'] ] ) ) {
 				$available_connections_by_service_name[ $available_connection['service_name'] ] = array();
@@ -319,8 +313,8 @@ class Connections_Post_Field {
 			}
 
 			foreach ( $available_connections_by_service_name[ $requested_connection['service_name'] ] as $available_connection ) {
-				if ( $requested_connection['connection_id'] === $available_connection['id'] ) {
-					$changed_connections[ $available_connection['id'] ] = $requested_connection['enabled'];
+				if ( $requested_connection['connection_id'] === $available_connection['connection_id'] ) {
+					$changed_connections[ $available_connection['connection_id'] ] = $requested_connection['enabled'];
 					break;
 				}
 			}
@@ -344,7 +338,7 @@ class Connections_Post_Field {
 		foreach ( $changed_connections as $id => $enabled ) {
 			$connection = $available_connections_by_connection_id[ $id ];
 
-			if ( $connection['done'] || ! $connection['toggleable'] ) {
+			if ( $connection['done'] ) {
 				continue;
 			}
 

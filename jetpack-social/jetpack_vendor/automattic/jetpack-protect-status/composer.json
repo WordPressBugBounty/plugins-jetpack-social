@@ -5,16 +5,17 @@
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"php": ">=7.2",
-		"automattic/jetpack-connection": "^6.3.0",
-		"automattic/jetpack-plugins-installer": "^0.5.0",
-		"automattic/jetpack-sync": "^4.4.0",
-		"automattic/jetpack-protect-models": "^0.4.1",
-		"automattic/jetpack-plans": "^0.5.1"
+		"automattic/jetpack-connection": "^6.10.0",
+		"automattic/jetpack-plugins-installer": "^0.5.4",
+		"automattic/jetpack-sync": "^4.10.0",
+		"automattic/jetpack-protect-models": "^0.5.4",
+		"automattic/jetpack-plans": "^0.7.0"
 	},
 	"require-dev": {
-		"yoast/phpunit-polyfills": "^1.1.1",
-		"automattic/jetpack-changelogger": "^5.1.0",
-		"automattic/wordbless": "^0.4.2"
+		"yoast/phpunit-polyfills": "^3.0.0",
+		"automattic/jetpack-changelogger": "^6.0.3",
+		"automattic/jetpack-test-environment": "@dev",
+		"automattic/phpunit-select-config": "^1.0.2"
 	},
 	"autoload": {
 		"classmap": [
@@ -25,12 +26,10 @@
 		"build-development": "echo 'Add your build step to composer.json, please!'",
 		"build-production": "echo 'Add your build step to composer.json, please!'",
 		"phpunit": [
-			"./vendor/phpunit/phpunit/phpunit --colors=always"
+			"phpunit-select-config phpunit.#.xml.dist --colors=always"
 		],
-		"post-install-cmd": "WorDBless\\Composer\\InstallDropin::copy",
-		"post-update-cmd": "WorDBless\\Composer\\InstallDropin::copy",
 		"test-coverage": [
-			"php -dpcov.directory=. ./vendor/bin/phpunit --coverage-php \"$COVERAGE_DIR/php.cov\""
+			"php -dpcov.directory=. ./vendor/bin/phpunit-select-config phpunit.#.xml.dist --coverage-php \"$COVERAGE_DIR/php.cov\""
 		],
 		"test-php": [
 			"@composer phpunit"
@@ -46,7 +45,7 @@
 	"extra": {
 		"autotagger": true,
 		"branch-alias": {
-			"dev-trunk": "0.4.x-dev"
+			"dev-trunk": "0.5.x-dev"
 		},
 		"changelogger": {
 			"link-template": "https://github.com/Automattic/jetpack-protect-status/compare/v${old}...v${new}"
