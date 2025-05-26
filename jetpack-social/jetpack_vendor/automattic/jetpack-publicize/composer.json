@@ -5,20 +5,20 @@
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"php": ">=7.2",
-		"automattic/jetpack-admin-ui": "^0.5.7",
-		"automattic/jetpack-connection": "^6.11.0",
-		"automattic/jetpack-autoloader": "^5.0.6",
+		"automattic/jetpack-admin-ui": "^0.5.9",
+		"automattic/jetpack-connection": "^6.11.6",
+		"automattic/jetpack-autoloader": "^5.0.7",
 		"automattic/jetpack-config": "^3.1.0",
-		"automattic/jetpack-assets": "^4.0.18",
-		"automattic/jetpack-redirect": "^3.0.6",
-		"automattic/jetpack-plans": "^0.7.0",
-		"automattic/jetpack-status": "^5.1.2"
+		"automattic/jetpack-assets": "^4.0.21",
+		"automattic/jetpack-redirect": "^3.0.7",
+		"automattic/jetpack-plans": "^0.8.0",
+		"automattic/jetpack-status": "^5.1.4"
 	},
 	"require-dev": {
-		"yoast/phpunit-polyfills": "^3.0.0",
-		"automattic/jetpack-changelogger": "^6.0.4",
+		"yoast/phpunit-polyfills": "^4.0.0",
+		"automattic/jetpack-changelogger": "^6.0.5",
 		"automattic/jetpack-test-environment": "@dev",
-		"automattic/phpunit-select-config": "^1.0.2"
+		"automattic/phpunit-select-config": "^1.0.3"
 	},
 	"suggest": {
 		"automattic/jetpack-autoloader": "Allow for better interoperability with other plugins that use this package."
@@ -63,7 +63,7 @@
 			"link-template": "https://github.com/Automattic/jetpack-publicize/compare/v${old}...v${new}"
 		},
 		"branch-alias": {
-			"dev-trunk": "0.64.x-dev"
+			"dev-trunk": "0.65.x-dev"
 		}
 	},
 	"config": {
