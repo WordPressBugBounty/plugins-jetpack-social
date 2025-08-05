@@ -110,7 +110,7 @@ class Boost extends Product {
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Speed up your site and improve SEO in seconds', 'jetpack-my-jetpack' );
+		return __( 'Improves your site speed and performance.', 'jetpack-my-jetpack' );
 	}
 
 	/**
@@ -194,19 +194,6 @@ class Boost extends Product {
 							),
 						),
 					),
-				),
-			),
-			array(
-				'name'  => __( 'Automatic image size analysis', 'jetpack-my-jetpack' ),
-				'info'  => array(
-					'content' => __(
-						'Scan your site for images that aren’t properly sized for the device they’re being viewed on.',
-						'jetpack-my-jetpack'
-					),
-				),
-				'tiers' => array(
-					self::FREE_TIER_SLUG     => array( 'included' => false ),
-					self::UPGRADED_TIER_SLUG => array( 'included' => true ),
 				),
 			),
 			array(
