@@ -468,6 +468,7 @@ class Defaults {
 		'iw_omnibus_price_log', // Omnibus Plugin - Log price changes.
 		'od_url_metrics', // Optimization Detective - Log URL metrics.
 		'ap_outbox', // ActivityPub Outbox; only used for broadcasting ActivityPub activity to followers.
+		'shop_order_placehold', // WooCommerce placeholder - Used to maintain compatibility and references when switching between WP Posts-based order storage and the newer HPOS tables.
 	);
 
 	/**
@@ -1187,6 +1188,13 @@ class Defaults {
 	public static $default_comment_meta_whitelist = array();
 
 	/**
+	 * Default for sync actions blacklist.
+	 *
+	 * @var array Empty array.
+	 */
+	public static $default_sync_actions_blacklist = array();
+
+	/**
 	 * Default for disabling sync across the site.
 	 *
 	 * @var int Bool-ish. Default to 0.
@@ -1372,7 +1380,7 @@ class Defaults {
 	/**
 	 * Default for enabling wpcom rest api for Sync.
 	 *
-	 * @var int Bool-ish. Default 0.
+	 * @var int Bool-ish. Default 1.
 	 */
-	public static $default_wpcom_rest_api_enabled = 0;
+	public static $default_wpcom_rest_api_enabled = 1;
 }

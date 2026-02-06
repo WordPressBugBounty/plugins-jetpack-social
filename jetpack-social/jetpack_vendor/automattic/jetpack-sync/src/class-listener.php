@@ -280,6 +280,21 @@ class Listener {
 			return;
 		}
 
+		// Skip enqueueing any Sync action when triggered by Jetpack CRM Woo Sync background job to avoid periodic noise.
+		if (
+			( function_exists( 'doing_action' ) && doing_action( 'jpcrm_woosync_sync' ) )
+			|| defined( 'jpcrm_woosync_running' )
+			|| defined( 'jpcrm_woosync_cron_running' )
+		) {
+			return;
+		}
+
+		// Skip enqueueing if current action is blacklisted.
+		$sync_actions_blacklist = Settings::get_setting( 'sync_actions_blacklist' );
+		if ( is_array( $sync_actions_blacklist ) && in_array( $current_filter, $sync_actions_blacklist, true ) ) {
+			return;
+		}
+
 		/**
 		 * Add an action hook to execute when anything on the whitelist gets sent to the queue to sync.
 		 *

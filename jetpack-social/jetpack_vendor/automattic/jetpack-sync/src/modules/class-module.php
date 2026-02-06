@@ -14,6 +14,10 @@ use Automattic\Jetpack\Sync\Replicastore;
 use Automattic\Jetpack\Sync\Sender;
 use Automattic\Jetpack\Sync\Settings;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit( 0 );
+}
+
 /**
  * Basic methods implemented by Jetpack Sync extensions.
  *
@@ -195,7 +199,7 @@ abstract class Module {
 	 * @access public
 	 *
 	 * @param array $config Full sync configuration for this sync module.
-	 * @return array Number of items yet to be enqueued.
+	 * @return int Number of items yet to be enqueued.
 	 */
 	public function estimate_full_sync_actions( $config ) {
 		// In subclasses, return the number of items yet to be enqueued.
@@ -242,7 +246,12 @@ abstract class Module {
 		if ( $sort && is_array( $values ) ) {
 			$this->recursive_ksort( $values );
 		}
-		return crc32( wp_json_encode( Functions::json_wrap( $values ) ) );
+		return crc32(
+			wp_json_encode(
+				Functions::json_wrap( $values ),
+				0 // phpcs:ignore Jetpack.Functions.JsonEncodeFlags.ZeroFound -- No `json_encode()` flags because we don't want disrupt the checksum algorithm.
+			)
+		);
 	}
 
 	/**
@@ -398,10 +407,10 @@ abstract class Module {
 	 *
 	 * @access protected
 	 *
-	 * @param string $config Full sync configuration for this module.
-	 * @param array  $status the current module full sync status.
-	 * @param float  $send_until timestamp until we want this request to send full sync events.
-	 * @param int    $started The timestamp when the full sync started.
+	 * @param array $config Full sync configuration for this module.
+	 * @param array $status the current module full sync status.
+	 * @param float $send_until timestamp until we want this request to send full sync events.
+	 * @param int   $started The timestamp when the full sync started.
 	 *
 	 * @return array Status, the module full sync status updated.
 	 */
@@ -445,7 +454,7 @@ abstract class Module {
 			// If we have objects as a key it means get_next_chunk is being overridden, we need to check for it being an empty array.
 			// In case it is an empty array, we should not send the action or increase the chunks_sent, we just need to update the status.
 			if ( ! isset( $objects['objects'] ) || array() !== $objects['objects'] ) {
-				$key    = $this->full_sync_action_name() . '_' . crc32( wp_json_encode( $status['last_sent'] ) );
+				$key    = $this->full_sync_action_name() . '_' . crc32( wp_json_encode( $status['last_sent'], JSON_UNESCAPED_SLASHES ) );
 				$result = $this->send_action( $this->full_sync_action_name(), array( $objects, $status['last_sent'] ), $key );
 				if ( is_wp_error( $result ) || $wpdb->last_error ) {
 					$status['error'] = true;
