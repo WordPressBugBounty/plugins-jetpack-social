@@ -6,17 +6,17 @@
 	"require": {
 		"php": ">=7.2",
 		"automattic/jetpack-admin-ui": "^0.5.11",
-		"automattic/jetpack-connection": "^6.20.2",
-		"automattic/jetpack-autoloader": "^5.0.15",
+		"automattic/jetpack-connection": "^7.1.1",
+		"automattic/jetpack-autoloader": "^5.0.16",
 		"automattic/jetpack-config": "^3.1.1",
-		"automattic/jetpack-assets": "^4.3.19",
+		"automattic/jetpack-assets": "^4.3.25",
 		"automattic/jetpack-redirect": "^3.0.9",
-		"automattic/jetpack-plans": "^0.11.1",
+		"automattic/jetpack-plans": "^0.11.2",
 		"automattic/jetpack-status": "^6.1.2"
 	},
 	"require-dev": {
 		"yoast/phpunit-polyfills": "^4.0.0",
-		"automattic/jetpack-changelogger": "^6.0.12",
+		"automattic/jetpack-changelogger": "^6.0.14",
 		"automattic/jetpack-test-environment": "@dev",
 		"automattic/phpunit-select-config": "^1.0.3"
 	},
@@ -53,6 +53,10 @@
 			"Composer\\Config::disableProcessTimeout",
 			"pnpm run watch"
 		],
+		"watch-hot": [
+			"Composer\\Config::disableProcessTimeout",
+			"pnpm run watch:hot"
+		],
 		"build-production": [
 			"pnpm run build-production-concurrently"
 		]
@@ -67,7 +71,7 @@
 			"link-template": "https://github.com/Automattic/jetpack-publicize/compare/v${old}...v${new}"
 		},
 		"branch-alias": {
-			"dev-trunk": "0.70.x-dev"
+			"dev-trunk": "0.72.x-dev"
 		}
 	},
 	"config": {
